@@ -1,0 +1,76 @@
+#include<pic18f4550.h>
+int c=0;
+int bo=0;
+void __interrupt() buzz(){
+    INTCONbits.GIE=0;
+    if(PIR1bits.TMR1IF==1)
+    {
+        if(bo==1 && c==10)
+        {
+            bo=0;
+            PORTAbits.RA5=0;
+            c=0;
+            
+        }
+        if(bo==0 && c==40)
+        {
+            bo=1;
+            PORTAbits.RA5=1;
+            c=0;
+            
+        }
+        c++;
+        TMR1=28038;
+        INTCONbits.GIE=1;
+        PIR1bits.TMR1IF=0;
+    }
+}
+void main(void)
+{
+    T1CON=0XB0;
+    TRISAbits.TRISA5=0;
+    PORTAbits.RA5=0;
+    PIE1bits.TMR1IE=1;
+    PIR1bits.TMR1IF=0;
+    INTCONbits.PEIE=1;
+    INTCONbits.GIE=1;
+    T1CONbits.TMR1ON=1;
+    while(1);
+    return;
+}
+
+2)#include<pic18f4550.h>
+
+int count=0;
+int buzzer_on=0;
+
+void __interrupt() Buzz(){
+    if(PIR1bits.TMR1IF==1){
+        if(buzzer_on && count==10){ //Condition for buzz is off (10 x 0.025 = 0.25 sec)
+            buzzer_on=0;
+            PORTAbits.RA5=0; // Buzzer off
+            count=0;
+        } 
+        if(!buzzer_on && count==40){ //Condition for buzz is off (40 x 0.025 = 1 sec)
+            buzzer_on=1;
+            PORTAbits.RA5=1; // Buzzer on
+            count=0;
+        } 
+        count++;
+        TMR1=28036; // timer of 0.025 sec
+        PIR1bits.TMR1IF=0; //reset Flag
+    }
+}
+void main(void) {
+    T1CON=0XB0;
+    TRISAbits.TRISA5=0; //Set A5 pin in Output mode
+    PORTAbits.RA5=0; // Buzzer off 
+
+    PIE1bits.TMR1IE=1; // enable TMR1 Interrupt
+    PIR1bits.TMR1IF=0; // reset flag zero
+    INTCONbits.PEIE=1; // enable peripheral Interrupt
+    INTCONbits.GIE=1; // enable All Interrupt
+    T1CONbits.TMR1ON=1; // Turn on the timer
+    while(1);
+    return;
+}

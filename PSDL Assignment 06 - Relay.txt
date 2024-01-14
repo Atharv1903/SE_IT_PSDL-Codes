@@ -1,0 +1,61 @@
+#include <xc.h>
+#include<pic18f4550.h>
+
+void __interrupt() rely()
+{
+    if(INTCON3bits.INT1IF==1)
+    {
+        INTCONbits.GIE=0;
+        PORTAbits.RA4=1;
+        for(int i=0;i<1000;i++)
+            for(int j=0;j<100;j++)
+        PORTAbits.RA4=0;
+        INTCON3bits.INT1IF=0;
+        INTCONbits.GIE=1;
+                       
+    }
+}
+
+
+void main(void) {
+    TRISBbits.RB1=1;
+    TRISAbits.RA4=0;
+    INTCON3bits.INT1IF=0;
+    INTCON3bits.INT1IE=1;
+    INTCONbits.GIE=1;
+    INTCONbits.PEIE=1;
+    INTCON2bits.INTEDG1=0;
+    
+    while(1);
+    return;
+    
+}
+
+2)#include <pic18f4550.h>
+
+void __interrupt() relay(){
+    if(INTCON3bits.INT1IF == 1){
+        INTCONbits.GIE = 0; // disable All Interrupt
+        PORTAbits.RA4 = 1; //Turn ON RELAY
+
+        for(int i=0; i<1000; i++)
+            for(int j=0; j<100; j++); //DELAY
+
+        PORTAbits.RA4 = 0; //TRUN OFF RELAY
+        INTCON3bits.INT1IF = 0; // reset flag zero           
+        INTCONbits.GIE = 1; // enable All Interrupt
+    }
+}
+
+void main(void){
+    TRISBbits.RB1 = 1; // external interrupt INT1
+    TRISAbits.RA4 = 0;      //RELAYYYY
+    INTCON3bits.INT1IF = 0; // reset flag zero
+    INTCON3bits.INT1IE = 1; // enable external Interrupt INT1
+    INTCON2bits.INTEDG1 = 1; // 1 for Rising Edge , 0 for falling Edge
+    INTCONbits.PEIE = 1; // enable peripheral Interrupt
+    INTCONbits.GIE = 1; // enable All Interrupt
+    while(1);
+    
+    return;
+};

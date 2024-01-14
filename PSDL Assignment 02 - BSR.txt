@@ -1,0 +1,20 @@
+#include<pic18f458.h>
+#include <xc.h>
+
+
+void main(void) {
+    int arr[100];
+    int sum=0;
+    
+    for(int i=0;i<100;i++)
+    {
+        arr[i]=i+1;
+        sum=sum+arr[i];
+    
+    }
+    
+    TMR0=sum;
+   
+    return;
+
+}

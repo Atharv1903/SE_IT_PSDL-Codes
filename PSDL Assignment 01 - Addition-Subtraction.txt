@@ -1,0 +1,91 @@
+#include<pic18f458.h>
+#include <xc.h>
+
+void main(void) {
+    TMR0=0XFF;
+    TMR2=0X11;
+    TMR1=TMR0+TMR2;
+    TRISB=0;
+    PORTB=TMR1;
+    
+    return;
+}
+
+16-bit - 
+
+#include <pic18f458.h>
+
+void main(void){
+		TMR0=0x0101;
+		TMR1=0x0002;
+
+		TMR1=TMR1+TMR0;
+		return;
+}
+
+//TO SHOW ON A PORT 
+
+void main(void){
+		TMR0=0x0101;
+		TMR1=0x0002;
+
+		TMR1=TMR1+TMR0;
+
+		TRISB=0;
+		TRISC=0;
+		PORTB=TMR1H;
+		PORTC=TMR1L;
+		return;
+}
+
+Subtraction -
+
+#include <pic18f458.h>
+
+void main(void){
+		TMR0L=0x01;
+		TMR0H=0x02;
+
+		TMR2=TMR0L-TMR0H;
+		return;
+}
+
+//TO SHOW ON A PORT 
+
+void main(void){
+		TMR0L=0x01;
+		TMR0H=0x02;
+
+		TMR2=TMR0L-TMR0H;
+
+		TRISB=0;
+		PORTB=TMR2;
+		return;
+}
+
+16 bit -
+
+#include <pic18f458.h>
+
+void main(void){
+		TMR0=0x0101;
+		TMR1=0x0002;
+
+		TMR1=TMR1-TMR0;
+		return;
+}
+
+//TO SHOW ON A PORT 
+
+void main(void){
+		TMR0=0x0101;
+		TMR1=0x0002;
+
+		TMR1=TMR1-TMR0;
+
+		TRISB=0;
+		TRISC=0;
+		PORTB=TMR1H;
+		PORTC=TMR1L;
+		return;
+}
